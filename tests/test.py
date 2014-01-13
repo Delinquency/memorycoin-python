@@ -8,8 +8,8 @@ import argparse
 import sys
 sys.path.append('../src')
 
-import bitcoinrpc
-from bitcoinrpc.exceptions import BitcoinException, InsufficientFunds
+import memorycoinrpc
+from memorycoinrpc.exceptions import BitcoinException, InsufficientFunds
 
 
 from decimal import Decimal
@@ -25,20 +25,20 @@ args = parser.parse_args()
 if __name__ == "__main__":
 
     if args.config:
-        from bitcoinrpc.config import read_config_file
+        from memorycoinrpc.config import read_config_file
         cfg = read_config_file(args.config)
     else:
-        from bitcoinrpc.config import read_default_config
+        from memorycoinrpc.config import read_default_config
         cfg = read_default_config(None)
     port = int(cfg.get('rpcport', '18332' if cfg.get('testnet') else '8332'))
     rpcuser = cfg.get('rpcuser', '')
 
     connections = []
     if not args.nolocal:
-        local_conn = bitcoinrpc.connect_to_local()  # will use read_default_config
+        local_conn = memorycoinrpc.connect_to_local()  # will use read_default_config
         connections.append(local_conn)
     if not args.noremote:
-        remote_conn = bitcoinrpc.connect_to_remote(
+        remote_conn = memorycoinrpc.connect_to_remote(
                 user=rpcuser, password=cfg['rpcpassword'], host='localhost',
                 port=port, use_https=False)
         connections.append(remote_conn)
