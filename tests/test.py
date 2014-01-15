@@ -37,40 +37,19 @@ if __name__ == "__main__":
     if not args.nolocal:
         local_conn = memorycoinrpc.connect_to_local()  # will use read_default_config
         connections.append(local_conn)
-    if not args.noremote:
-        remote_conn = memorycoinrpc.connect_to_remote(
-                user=rpcuser, password=cfg['rpcpassword'], host='localhost',
-                port=port, use_https=False)
-        connections.append(remote_conn)
 
     for conn in connections:
-        assert(conn.getinfo().testnet) # don't test on prodnet
 
-        assert(type(conn.getblockcount()) is int)
         assert(type(conn.getconnectioncount()) is int)
         assert(type(conn.getdifficulty()) is Decimal)
         assert(type(conn.getgenerate()) is bool)
         conn.setgenerate(True)
         conn.setgenerate(True, 2)
         conn.setgenerate(False)
-        assert(type(conn.gethashespersec()) is int)
-        account = "testaccount"
-        account2 = "testaccount2"
+        #conn.backupwallet(destination)
+        account = 'test'
         bitcoinaddress = conn.getnewaddress(account)
         conn.setaccount(bitcoinaddress, account)
-        address = conn.getaccountaddress(account)
-        address2 = conn.getaccountaddress(account2)
-        assert(conn.getaccount(address) == account)
-        addresses = conn.getaddressesbyaccount(account)
-        assert(address in addresses)
-        #conn.sendtoaddress(bitcoinaddress, amount, comment=None, comment_to=None)
-        conn.getreceivedbyaddress(bitcoinaddress)
-        conn.getreceivedbyaccount(account)
-        conn.listreceivedbyaddress()
-        conn.listreceivedbyaccount()
-        #conn.backupwallet(destination)
-        x = conn.validateaddress(address)
-        assert(x.isvalid == True)
         x = conn.validateaddress("invalid")
         assert(x.isvalid == False)
         messages = ('Hello, world!', u'かたな')
@@ -78,20 +57,8 @@ if __name__ == "__main__":
             signature = conn.signmessage(bitcoinaddress, message)
             assert(conn.verifymessage(bitcoinaddress, signature, message) is True)
 
-        for accid in conn.listaccounts(as_dict=True).iterkeys():
-          tx = conn.listtransactions(accid)
-          if len(tx) > 0:
-            txid = tx[0].txid
-            txdata = conn.gettransaction(txid)
-            assert(txdata.txid == tx[0].txid)
-
         assert(type(conn.listunspent()) is list)  # needs better testing
 
-        try:
-            conn.sendtoaddress(bitcoinaddress, 10000000)
-            assert(0)  # Should raise InsufficientFunds
-        except InsufficientFunds:
-            pass
 
     info = conn.getinfo()
     print "Blocks: %i" % info.blocks
@@ -100,7 +67,6 @@ if __name__ == "__main__":
 
     m_info = conn.getmininginfo()
     print ("Pooled Transactions: {pooledtx}\n"
-           "Testnet: {testnet}\n"
-           "Hash Rate: {hashes} H/s".format(pooledtx=m_info.pooledtx,
-                                            testnet=m_info.testnet,
-                                            hashes=m_info.hashespersec))
+           "Testnet: {testnet}\n".format(pooledtx=m_info.pooledtx,
+                                        testnet=m_info.testnet,
+                                        ))
