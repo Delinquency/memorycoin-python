@@ -40,7 +40,7 @@ class BitcoinConnection(object):
     - *host* -- Bitcoin JSON-RPC host.
     - *port* -- Bitcoin JSON-RPC port.
     """
-    def __init__(self, user, password, host='localhost', port=8332,
+    def __init__(self, user, password, host='localhost', port=1925,
                  use_https=False):
         """
         Create a new bitcoin server connection.

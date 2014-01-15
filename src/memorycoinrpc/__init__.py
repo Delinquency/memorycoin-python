@@ -38,14 +38,14 @@ def connect_to_local(filename=None):
     cfg = read_default_config(filename)
     if cfg is None:
         cfg = {}
-    port = int(cfg.get('rpcport', '18332' if cfg.get('testnet') else '8332'))
+    port = int(cfg.get('rpcport', '18332' if cfg.get('testnet') else '1925'))
     rpcuser = cfg.get('rpcuser', '')
     rpcpassword = cfg.get('rpcpassword', '')
 
     return BitcoinConnection(rpcuser, rpcpassword, 'localhost', port)
 
 
-def connect_to_remote(user, password, host='localhost', port=8332,
+def connect_to_remote(user, password, host='localhost', port=1925,
                       use_https=False):
     """
     Connect to remote or alternative local bitcoin client instance.
