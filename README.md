@@ -1,4 +1,3 @@
-
 ####memorycoin-python
 
 memorycoin-python is a set of python libraries that allows easy access to the
@@ -29,8 +28,7 @@ rpcallowip=*
 server=1
 bind = 0.0.0.0
 rpcport=17772
-txindex=1conn = memorycoinrpc.connect_to_local()
-print "Your balance is %f" % (conn.getbalance(),)
+txindex=1
 debugvote=1
 ```
 
