@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 """
-Utilities for reading bitcoin configuration files.
+Utilities for reading memorycoin configuration files.
 """
 
 import os
@@ -48,7 +48,7 @@ def read_config_file(filename):
 
 def read_default_config(filename=None):
     """
-    Read bitcoin default configuration from the current user's home directory.
+    Read memorycoin default configuration from the current user's home directory.
 
     Arguments:
 

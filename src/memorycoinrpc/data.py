@@ -18,14 +18,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 """
-Bitcoin RPC service, data objects.
+Memorycoin RPC service, data objects.
 """
 from memorycoinrpc.util import DStruct
 
 
 class ServerInfo(DStruct):
     """
-    Information object returned by :func:`~memorycoinrpc.connection.BitcoinConnection.getinfo`.
+    Information object returned by :func:`~memorycoinrpc.connection.MemorycoinConnection.getinfo`.
 
     - *errors* -- Number of errors.
 
@@ -43,7 +43,7 @@ class ServerInfo(DStruct):
 
     - *testnet* -- True if connected to testnet, False if on real network.
 
-    - *version* -- Bitcoin client version.
+    - *version* -- Memorycoin client version.
 
     - *proxy* -- Proxy configured in client.
 
@@ -61,7 +61,7 @@ class ServerInfo(DStruct):
 
 class AccountInfo(DStruct):
     """
-    Information object returned by :func:`~memorycoinrpc.connection.BitcoinConnection.listreceivedbyaccount`.
+    Information object returned by :func:`~memorycoinrpc.connection.MemorycoinConnection.listreceivedbyaccount`.
 
     - *account* -- The account of the receiving address.
 
@@ -74,7 +74,7 @@ class AccountInfo(DStruct):
 
 class AddressInfo(DStruct):
     """
-    Information object returned by :func:`~memorycoinrpc.connection.BitcoinConnection.listreceivedbyaddress`.
+    Information object returned by :func:`~memorycoinrpc.connection.MemorycoinConnection.listreceivedbyaddress`.
 
     - *address* -- Receiving address.
 
@@ -89,11 +89,11 @@ class AddressInfo(DStruct):
 
 class TransactionInfo(DStruct):
     """
-    Information object returned by :func:`~memorycoinrpc.connection.BitcoinConnection.listtransactions`.
+    Information object returned by :func:`~memorycoinrpc.connection.MemorycoinConnection.listtransactions`.
 
     - *account* -- account name.
 
-    - *address* -- the address bitcoins were sent to, or received from.
+    - *address* -- the address memorycoins were sent to, or received from.
     
     - *category* -- will be generate, send, receive, or move.
 
@@ -115,20 +115,20 @@ class TransactionInfo(DStruct):
 
 class AddressValidation(DStruct):
     """
-    Information object returned by :func:`~memorycoinrpc.connection.BitcoinConnection.validateaddress`.
+    Information object returned by :func:`~memorycoinrpc.connection.MemorycoinConnection.validateaddress`.
 
     - *isvalid* -- Validatity of address (:const:`True` or :const:`False`).
 
     - *ismine* -- :const:`True` if the address is in the server's wallet.
 
-    - *address* -- Bitcoin address.
+    - *address* -- Memorycoin address.
 
     """
 
 
 class WorkItem(DStruct):
     """
-    Information object returned by :func:`~memorycoinrpc.connection.BitcoinConnection.getwork`.
+    Information object returned by :func:`~memorycoinrpc.connection.MemorycoinConnection.getwork`.
 
     - *midstate* -- Precomputed hash state after hashing the first half of the data.
 
@@ -143,7 +143,7 @@ class WorkItem(DStruct):
 
 class MiningInfo(DStruct):
     """
-    Information object returned by :func:`~memorycoinrpc.connection.BitcoinConnection.getmininginfo`.
+    Information object returned by :func:`~memorycoinrpc.connection.MemorycoinConnection.getmininginfo`.
 
     - *blocks* -- Number of blocks.
 

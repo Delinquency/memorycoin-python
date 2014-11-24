@@ -6,9 +6,9 @@ setup(
     long_description='This package allows performing commands such as listing the current balance'
     ' and sending coins to the Satoshi (original) client from Python. The communication with the'
     ' client happens over JSON-RPC.',
-    maintainer='Emre Yilmaz',
-    maintainer_email='mail@emreyilmaz.me',
-    url='http://github.com/emre',
+    maintainer='Memorycoin Dev. Team',
+    maintainer_email='admins@memorycoin.org',
+    url='https://github.com/Delinquency/memorycoin-python/',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',

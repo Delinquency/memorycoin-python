@@ -18,21 +18,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 """
-bitcoin-python - Easy-to-use Bitcoin API client
+memorycoin-python - Easy-to-use Memorycoin API client
 """
 
 
 def connect_to_local(filename=None):
     """
-    Connect to default bitcoin instance owned by this user, on this machine.
+    Connect to default memorycoin instance owned by this user, on this machine.
 
-    Returns a :class:`~memorycoinrpc.connection.BitcoinConnection` object.
+    Returns a :class:`~memorycoinrpc.connection.MemorycoinConnection` object.
 
     Arguments:
 
         - `filename`: Path to a configuration file in a non-standard location (optional)
     """
-    from memorycoinrpc.connection import BitcoinConnection
+    from memorycoinrpc.connection import MemorycoinConnection
     from memorycoinrpc.config import read_default_config
 
     cfg = read_default_config(filename)
@@ -42,16 +42,16 @@ def connect_to_local(filename=None):
     rpcuser = cfg.get('rpcuser', '')
     rpcpassword = cfg.get('rpcpassword', '')
 
-    return BitcoinConnection(rpcuser, rpcpassword, 'localhost', port)
+    return MemorycoinConnection(rpcuser, rpcpassword, 'localhost', port)
 
 
 def connect_to_remote(user, password, host='localhost', port=1925,
                       use_https=False):
     """
-    Connect to remote or alternative local bitcoin client instance.
+    Connect to remote or alternative local memorycoin client instance.
 
-    Returns a :class:`~memorycoinrpc.connection.BitcoinConnection` object.
+    Returns a :class:`~memorycoinrpc.connection.MemorycoinConnection` object.
     """
-    from memorycoinrpc.connection import BitcoinConnection
+    from memorycoinrpc.connection import MemorycoinConnection
 
-    return BitcoinConnection(user, password, host, port, use_https)
+    return MemorycoinConnection(user, password, host, port, use_https)

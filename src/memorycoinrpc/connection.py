@@ -18,32 +18,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 """
-Connect to Bitcoin server via JSON-RPC.
+Connect to Memorycoin server via JSON-RPC.
 """
 from memorycoinrpc.proxy import AuthServiceProxy
-from memorycoinrpc.exceptions import (wrap_exception, BitcoinException,
+from memorycoinrpc.exceptions import (wrap_exception, MemorycoinException,
                                    WalletPassphraseIncorrect,
                                    WalletAlreadyUnlocked)
 from memorycoinrpc.data import (ServerInfo, AccountInfo, AddressInfo, TransactionInfo,
                              AddressValidation, WorkItem, MiningInfo)
 
 
-class BitcoinConnection(object):
+class MemorycoinConnection(object):
     """
-    A BitcoinConnection object defines a connection to a bitcoin server.
+    A MemorycoinConnection object defines a connection to a memorycoin server.
     It is a thin wrapper around a JSON-RPC API connection.
 
     Arguments to constructor:
 
     - *user* -- Authenticate as user.
     - *password* -- Authentication password.
-    - *host* -- Bitcoin JSON-RPC host.
-    - *port* -- Bitcoin JSON-RPC port.
+    - *host* -- Memorycoin JSON-RPC host.
+    - *port* -- Memorycoin JSON-RPC port.
     """
     def __init__(self, user, password, host='localhost', port=1925,
                  use_https=False):
         """
-        Create a new bitcoin server connection.
+        Create a new memorycoin server connection.
         """
         url = 'http{s}://{user}:{password}@{host}:{port}/'.format(
             s='s' if use_https else '',
@@ -53,7 +53,7 @@ class BitcoinConnection(object):
 
     def stop(self):
         """
-        Stop bitcoin server.
+        Stop memorycoin server.
         """
         self.proxy.stop()
 
@@ -139,7 +139,7 @@ class BitcoinConnection(object):
 
     def getnewaddress(self, account=None):
         """
-        Returns a new bitcoin address for receiving payments.
+        Returns a new memorycoin address for receiving payments.
 
         Arguments:
 
@@ -154,7 +154,7 @@ class BitcoinConnection(object):
 
     def getaccountaddress(self, account):
         """
-        Returns the current bitcoin address for receiving payments to an account.
+        Returns the current memorycoin address for receiving payments to an account.
 
         Arguments:
 
@@ -163,27 +163,27 @@ class BitcoinConnection(object):
         """
         return self.proxy.getaccountaddress(account)
 
-    def setaccount(self, bitcoinaddress, account):
+    def setaccount(self, memorycoinaddress, account):
         """
         Sets the account associated with the given address.
 
         Arguments:
 
-        - *bitcoinaddress* -- Bitcoin address to associate.
+        - *memorycoinaddress* -- Memorycoin address to associate.
         - *account* -- Account to associate the address to.
 
         """
-        return self.proxy.setaccount(bitcoinaddress, account)
+        return self.proxy.setaccount(memorycoinaddress, account)
 
-    def getaccount(self, bitcoinaddress):
+    def getaccount(self, memorycoinaddress):
         """
         Returns the account associated with the given address.
 
         Arguments:
 
-        - *bitcoinaddress* -- Bitcoin address to get account for.
+        - *memorycoinaddress* -- Memorycoin address to get account for.
         """
-        return self.proxy.getaccount(bitcoinaddress)
+        return self.proxy.getaccount(memorycoinaddress)
 
     def getaddressesbyaccount(self, account):
         """
@@ -195,13 +195,13 @@ class BitcoinConnection(object):
         """
         return self.proxy.getaddressesbyaccount(account)
 
-    def sendtoaddress(self, bitcoinaddress, amount, comment=None, comment_to=None):
+    def sendtoaddress(self, memorycoinaddress, amount, comment=None, comment_to=None):
         """
-        Sends *amount* from the server's available balance to *bitcoinaddress*.
+        Sends *amount* from the server's available balance to *memorycoinaddress*.
 
         Arguments:
 
-        - *bitcoinaddress* -- Bitcoin address to send to.
+        - *memorycoinaddress* -- Memorycoin address to send to.
         - *amount* -- Amount to send (float, rounded to the nearest 0.00000001).
         - *minconf* -- Minimum number of confirmations required for transferred balance.
         - *comment* -- Comment for transaction.
@@ -209,24 +209,24 @@ class BitcoinConnection(object):
 
         """
         if comment is None:
-            return self.proxy.sendtoaddress(bitcoinaddress, amount)
+            return self.proxy.sendtoaddress(memorycoinaddress, amount)
         elif comment_to is None:
-            return self.proxy.sendtoaddress(bitcoinaddress, amount, comment)
+            return self.proxy.sendtoaddress(memorycoinaddress, amount, comment)
         else:
-            return self.proxy.sendtoaddress(bitcoinaddress, amount, comment, comment_to)
+            return self.proxy.sendtoaddress(memorycoinaddress, amount, comment, comment_to)
 
-    def getreceivedbyaddress(self, bitcoinaddress, minconf=1):
+    def getreceivedbyaddress(self, memorycoinaddress, minconf=1):
         """
-        Returns the total amount received by a bitcoin address in transactions with at least a
+        Returns the total amount received by a memorycoin address in transactions with at least a
         certain number of confirmations.
 
         Arguments:
 
-        - *bitcoinaddress* -- Address to query for total amount.
+        - *memorycoinaddress* -- Address to query for total amount.
 
         - *minconf* -- Number of confirmations to require, defaults to 1.
         """
-        return self.proxy.getreceivedbyaddress(bitcoinaddress, minconf)
+        return self.proxy.getreceivedbyaddress(memorycoinaddress, minconf)
 
     def getreceivedbyaccount(self, account, minconf=1):
         """
@@ -416,7 +416,7 @@ class BitcoinConnection(object):
 
     def validateaddress(self, validateaddress):
         """
-        Validate a bitcoin address and return information for it.
+        Validate a memorycoin address and return information for it.
 
         The information is represented by a :class:`~memorycoinrpc.data.AddressValidation` object.
 
@@ -461,18 +461,18 @@ class BitcoinConnection(object):
         else:
             return self.proxy.move(fromaccount, toaccount, amount, minconf, comment)
 
-    def sendfrom(self, fromaccount, tobitcoinaddress, amount, minconf=1, comment=None,
+    def sendfrom(self, fromaccount, tomemorycoinaddress, amount, minconf=1, comment=None,
                  comment_to=None):
         """
-        Sends amount from account's balance to bitcoinaddress. This method will fail
-        if there is less than amount bitcoins with minconf confirmations in the account's
+        Sends amount from account's balance to memorycoinaddress. This method will fail
+        if there is less than amount memorycoins with minconf confirmations in the account's
         balance (unless account is the empty-string-named default account; it
         behaves like the sendtoaddress method). Returns transaction ID on success.
 
         Arguments:
 
         - *fromaccount* -- Account to send from.
-        - *tobitcoinaddress* -- Bitcoin address to send to.
+        - *tomemorycoinaddress* -- Memorycoin address to send to.
         - *amount* -- Amount to send (float, rounded to the nearest 0.01).
         - *minconf* -- Minimum number of confirmations required for transferred balance.
         - *comment* -- Comment for transaction.
@@ -480,24 +480,24 @@ class BitcoinConnection(object):
 
         """
         if comment is None:
-            return self.proxy.sendfrom(fromaccount, tobitcoinaddress, amount, minconf)
+            return self.proxy.sendfrom(fromaccount, tomemorycoinaddress, amount, minconf)
         elif comment_to is None:
-            return self.proxy.sendfrom(fromaccount, tobitcoinaddress, amount, minconf, comment)
+            return self.proxy.sendfrom(fromaccount, tomemorycoinaddress, amount, minconf, comment)
         else:
-            return self.proxy.sendfrom(fromaccount, tobitcoinaddress, amount, minconf,
+            return self.proxy.sendfrom(fromaccount, tomemorycoinaddress, amount, minconf,
                                        comment, comment_to)
 
     def sendmany(self, fromaccount, todict, minconf=1, comment=None):
         """
-        Sends specified amounts from account's balance to bitcoinaddresses. This method will fail
-        if there is less than total amount bitcoins with minconf confirmations in the account's
+        Sends specified amounts from account's balance to memorycoinaddresses. This method will fail
+        if there is less than total amount memorycoins with minconf confirmations in the account's
         balance (unless account is the empty-string-named default account; Returns transaction ID
         on success.
 
         Arguments:
 
         - *fromaccount* -- Account to send from.
-        - *todict* -- Dictionary with Bitcoin addresses as keys and amounts as values.
+        - *todict* -- Dictionary with Memorycoin addresses as keys and amounts as values.
         - *minconf* -- Minimum number of confirmations required for transferred balance.
         - *comment* -- Comment for transaction.
 
@@ -507,20 +507,20 @@ class BitcoinConnection(object):
         else:
             return self.proxy.sendmany(fromaccount, todict, minconf, comment)
 
-    def verifymessage(self, bitcoinaddress, signature, message):
+    def verifymessage(self, memorycoinaddress, signature, message):
         """
-        Verifies a signature given the bitcoinaddress used to sign,
+        Verifies a signature given the memorycoinaddress used to sign,
         the signature itself, and the message that was signed.
         Returns :const:`True` if the signature is valid, and :const:`False` if it is invalid.
 
         Arguments:
 
-        - *bitcoinaddress* -- the bitcoinaddress used to sign the message
+        - *memorycoinaddress* -- the memorycoinaddress used to sign the message
         - *signature* -- the signature to be verified
         - *message* -- the message that was originally signed
 
         """
-        return self.proxy.verifymessage(bitcoinaddress, signature, message)
+        return self.proxy.verifymessage(memorycoinaddress, signature, message)
 
     def getwork(self, data=None):
         """
@@ -575,7 +575,7 @@ class BitcoinConnection(object):
         try:
             self.proxy.walletpassphrase(passphrase, timeout)
             return True
-        except BitcoinException as exception:
+        except MemorycoinException as exception:
             if dont_raise:
                 if isinstance(exception, WalletPassphraseIncorrect):
                     return False
@@ -604,7 +604,7 @@ class BitcoinConnection(object):
         try:
             self.proxy.walletpassphrasechange(oldpassphrase, newpassphrase)
             return True
-        except BitcoinException as exception:
+        except MemorycoinException as exception:
             if dont_raise and isinstance(exception, WalletPassphraseIncorrect):
                 return False
             raise exception
@@ -615,7 +615,7 @@ class BitcoinConnection(object):
 
         Arguments:
 
-        - *address* -- Bitcoin address whose private key should be returned.
+        - *address* -- Memorycoin address whose private key should be returned.
         """
         return self.proxy.dumpprivkey(address)
 
@@ -623,7 +623,7 @@ class BitcoinConnection(object):
         """
         Sign messages, returns the signature
 
-        :param address: Bitcoin address used to sign a message
+        :param address: Memorycoin address used to sign a message
         :type address: str or unicode
         :param message: The message to sign
         :type message: str or unicode
@@ -635,7 +635,7 @@ class BitcoinConnection(object):
         """
         Verify a signed message
 
-        :param address: Bitcoin address used to sign a message
+        :param address: Memorycoin address used to sign a message
         :type address: str or unicode
         :param signature: The signature
         :type signature: unicode

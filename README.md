@@ -17,7 +17,7 @@ $ [sudo] easy_install memorycoin-python
 
 ####running the deamon
 
-- run `bitcoind` from the memorycoin source. (src/bitcoind) follow the instructions about rpcuser and password.
+- run `memorycoind` from the memorycoin source. (src/memorycoind) follow the instructions about rpcuser and password.
 
 example memorycoin.conf
 
@@ -67,4 +67,4 @@ print conn.getdifficulty()
 # output: 0.00008961
 ```
 
-you can explore other methods over the <a href="http://laanwj.github.io/bitcoin-python/doc/">bitcoin-python documentation.</a>
+you can explore other methods over the <a href="http://laanwj.github.io/memorycoin-python/doc/">memorycoin-python documentation.</a>

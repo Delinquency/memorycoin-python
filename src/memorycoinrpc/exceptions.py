@@ -22,11 +22,11 @@ Exception definitions.
 """
 
 
-class BitcoinException(Exception):
+class MemorycoinException(Exception):
     """
-    Base class for exceptions received from Bitcoin server.
+    Base class for exceptions received from Memorycoin server.
 
-    - *code* -- Error code from ``bitcoind``.
+    - *code* -- Error code from ``memorycoind``.
     """
     # Standard JSON-RPC 2.0 errors
     INVALID_REQUEST  = -32600,
@@ -46,7 +46,7 @@ class BitcoinException(Exception):
     DESERIALIZATION_ERROR       = -22 # Error parsing or validating structure in raw format
 
     # P2P client errors
-    CLIENT_NOT_CONNECTED        = -9  # Bitcoin is not connected
+    CLIENT_NOT_CONNECTED        = -9  # Memorycoin is not connected
     CLIENT_IN_INITIAL_DOWNLOAD  = -10 # Still downloading initial blocks
 
     # Wallet errors
@@ -85,40 +85,40 @@ class TransportException(Exception):
 
 
 ##### General application defined errors
-class SafeMode(BitcoinException):
+class SafeMode(MemorycoinException):
     """
-    Operation denied in safe mode (run ``bitcoind`` with ``-disablesafemode``).
+    Operation denied in safe mode (run ``memorycoind`` with ``-disablesafemode``).
     """
 
 
-class JSONTypeError(BitcoinException):
+class JSONTypeError(MemorycoinException):
     """
     Unexpected type was passed as parameter
     """
 InvalidAmount = JSONTypeError  # Backwards compatibility
 
 
-class InvalidAddressOrKey(BitcoinException):
+class InvalidAddressOrKey(MemorycoinException):
     """
     Invalid address or key.
     """
 InvalidTransactionID = InvalidAddressOrKey  # Backwards compatibility
 
 
-class OutOfMemory(BitcoinException):
+class OutOfMemory(MemorycoinException):
     """
     Out of memory during operation.
     """
 
 
-class InvalidParameter(BitcoinException):
+class InvalidParameter(MemorycoinException):
     """
     Invalid parameter provided to RPC call.
     """
 
 
 ##### Client errors
-class ClientException(BitcoinException):
+class ClientException(MemorycoinException):
     """
     P2P network error.
     This exception is never raised but functions as a superclass
@@ -139,7 +139,7 @@ class DownloadingBlocks(ClientException):
 
 
 ##### Wallet errors
-class WalletError(BitcoinException):
+class WalletError(MemorycoinException):
     """
     Unspecified problem with wallet (key not found etc.)
     """
@@ -197,31 +197,31 @@ class WalletAlreadyUnlocked(WalletError):
 # For convenience, we define more specific exception classes
 # for the more common errors.
 _exception_map = {
-    BitcoinException.FORBIDDEN_BY_SAFE_MODE: SafeMode,
-    BitcoinException.TYPE_ERROR: JSONTypeError,
-    BitcoinException.WALLET_ERROR: WalletError,
-    BitcoinException.INVALID_ADDRESS_OR_KEY: InvalidAddressOrKey,
-    BitcoinException.WALLET_INSUFFICIENT_FUNDS: InsufficientFunds,
-    BitcoinException.OUT_OF_MEMORY: OutOfMemory,
-    BitcoinException.INVALID_PARAMETER: InvalidParameter,
-    BitcoinException.CLIENT_NOT_CONNECTED: NotConnected,
-    BitcoinException.CLIENT_IN_INITIAL_DOWNLOAD: DownloadingBlocks,
-    BitcoinException.WALLET_INSUFFICIENT_FUNDS: InsufficientFunds,
-    BitcoinException.WALLET_INVALID_ACCOUNT_NAME: InvalidAccountName,
-    BitcoinException.WALLET_KEYPOOL_RAN_OUT: KeypoolRanOut,
-    BitcoinException.WALLET_UNLOCK_NEEDED: WalletUnlockNeeded,
-    BitcoinException.WALLET_PASSPHRASE_INCORRECT: WalletPassphraseIncorrect,
-    BitcoinException.WALLET_WRONG_ENC_STATE: WalletWrongEncState,
-    BitcoinException.WALLET_ENCRYPTION_FAILED: WalletEncryptionFailed,
-    BitcoinException.WALLET_ALREADY_UNLOCKED: WalletAlreadyUnlocked,
+    MemorycoinException.FORBIDDEN_BY_SAFE_MODE: SafeMode,
+    MemorycoinException.TYPE_ERROR: JSONTypeError,
+    MemorycoinException.WALLET_ERROR: WalletError,
+    MemorycoinException.INVALID_ADDRESS_OR_KEY: InvalidAddressOrKey,
+    MemorycoinException.WALLET_INSUFFICIENT_FUNDS: InsufficientFunds,
+    MemorycoinException.OUT_OF_MEMORY: OutOfMemory,
+    MemorycoinException.INVALID_PARAMETER: InvalidParameter,
+    MemorycoinException.CLIENT_NOT_CONNECTED: NotConnected,
+    MemorycoinException.CLIENT_IN_INITIAL_DOWNLOAD: DownloadingBlocks,
+    MemorycoinException.WALLET_INSUFFICIENT_FUNDS: InsufficientFunds,
+    MemorycoinException.WALLET_INVALID_ACCOUNT_NAME: InvalidAccountName,
+    MemorycoinException.WALLET_KEYPOOL_RAN_OUT: KeypoolRanOut,
+    MemorycoinException.WALLET_UNLOCK_NEEDED: WalletUnlockNeeded,
+    MemorycoinException.WALLET_PASSPHRASE_INCORRECT: WalletPassphraseIncorrect,
+    MemorycoinException.WALLET_WRONG_ENC_STATE: WalletWrongEncState,
+    MemorycoinException.WALLET_ENCRYPTION_FAILED: WalletEncryptionFailed,
+    MemorycoinException.WALLET_ALREADY_UNLOCKED: WalletAlreadyUnlocked,
 }
 
 
 def wrap_exception(error):
     """
-    Convert a JSON error object to a more specific Bitcoin exception.
+    Convert a JSON error object to a more specific Memorycoin exception.
     """
-    # work around to temporarily fix https://github.com/bitcoin/bitcoin/issues/3007
-    if error['code'] == BitcoinException.WALLET_ERROR and error['message'] == u'Insufficient funds':
-        error['code'] = BitcoinException.WALLET_INSUFFICIENT_FUNDS
-    return _exception_map.get(error['code'], BitcoinException)(error)
+    # work around to temporarily fix https://github.com/memorycoin/memorycoin/issues/3007
+    if error['code'] == MemorycoinException.WALLET_ERROR and error['message'] == u'Insufficient funds':
+        error['code'] = MemorycoinException.WALLET_INSUFFICIENT_FUNDS
+    return _exception_map.get(error['code'], MemorycoinException)(error)
